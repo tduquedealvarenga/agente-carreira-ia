@@ -1,4 +1,47 @@
+import { useState } from "react";
+
+import { validateReviewInput } from "./review-triage/validate-review-input";
+import type { ReviewInput } from "./types/review-input";
+import type { ReviewInputValidationResult } from "./review-triage/validate-review-input";
+import { mockCoreClient } from "./core-client/mock-core-client";
+import { ReviewForm } from "./components/ReviewForm";
+import { buildPublicResult, type PublicReviewResult } from "./presentation/build-public-result";
+import { ReviewResult } from "./components/ReviewResult";
+
 export default function App() {
+  const [result, setResult] = useState<PublicReviewResult | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [requestError, setRequestError] = useState("");
+
+  function handleReviewSubmit(payload: ReviewInput): ReviewInputValidationResult {
+    const validation = validateReviewInput(payload);
+
+    if (!validation.isValid) {
+      setIsLoading(false);
+      setRequestError("");
+      setResult(null);
+      return validation;
+    }
+
+    setIsLoading(true);
+    setRequestError("");
+
+    void mockCoreClient
+      .reviewResume(payload)
+      .then((output) => {
+        setResult(buildPublicResult(output));
+      })
+      .catch(() => {
+        setResult(null);
+        setRequestError("Nao foi possivel carregar o resultado mock nesta etapa.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+
+    return validation;
+  }
+
   return (
     <main
       style={{
@@ -44,15 +87,26 @@ export default function App() {
         </h1>
         <p
           style={{
-            margin: 0,
+            margin: "0 0 24px",
             fontSize: "16px",
             lineHeight: 1.6,
             color: "#374151",
           }}
         >
-          Base inicial do prototipo local em Vite + React + TypeScript. A
-          proxima etapa adiciona o fluxo mock-first de revisao de curriculo.
+          Coleta inicial da v1 mock-first para revisao de curriculo. Nesta etapa
+          a tela ja consome o mock canonico e apresenta o resultado no formato
+          publico da v1.
         </p>
+        <ReviewForm onSubmit={handleReviewSubmit} />
+        {isLoading ? (
+          <p style={{ margin: "24px 0 0", color: "#374151" }}>
+            Carregando resultado mock...
+          </p>
+        ) : null}
+        {requestError ? (
+          <p style={{ margin: "24px 0 0", color: "#b91c1c" }}>{requestError}</p>
+        ) : null}
+        {result ? <ReviewResult result={result} /> : null}
       </div>
     </main>
   );
