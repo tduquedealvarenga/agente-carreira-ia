@@ -1,0 +1,51 @@
+{
+  "status": "ok",
+  "resumo_geral": "Curriculo com base operacional consistente e contato inicial com indicadores, mas ainda comunica pouco a transicao para dados.",
+  "veredito": "Promissor, com lacunas claras para Analista de Dados Junior.",
+  "achados_principais": [
+    {
+      "categoria": "ponto_forte",
+      "titulo": "Base real de operacao",
+      "descricao": "A experiencia mostra rotina profissional concreta com atendimento e organizacao de informacoes."
+    },
+    {
+      "categoria": "ponto_forte",
+      "titulo": "Contato com planilhas e indicadores",
+      "descricao": "Ja existe um ponto de partida coerente com a transicao para dados."
+    },
+    {
+      "categoria": "lacuna_prioritaria",
+      "titulo": "Objetivo pouco traduzido no curriculo",
+      "descricao": "A direcao para dados ainda nao aparece com clareza suficiente no posicionamento."
+    },
+    {
+      "categoria": "lacuna_prioritaria",
+      "titulo": "Impacto pouco explicitado",
+      "descricao": "As atividades aparecem mais como tarefas do que como resultados observaveis."
+    }
+  ],
+  "sugestoes_priorizadas": [
+    {
+      "prioridade": 1,
+      "acao": "Reescrever o resumo profissional para conectar a experiencia em suporte com a meta de atuar com dados."
+    },
+    {
+      "prioridade": 2,
+      "acao": "Detalhar melhor quais planilhas, indicadores ou rotinas de analise ja fizeram parte da experiencia."
+    },
+    {
+      "prioridade": 3,
+      "acao": "Trocar descricoes genericas de atividade por formulacoes que mostrem contexto, contribuicao e efeito pratico."
+    }
+  ],
+  "perguntas_pendentes": [
+    {
+      "pergunta": "Quais ferramentas ou recursos de dados voce ja usou, mesmo que em nivel inicial?"
+    }
+  ],
+  "proximos_passos": [
+    {
+      "acao": "Atualizar primeiro o resumo profissional antes de revisar as experiencias."
+    }
+  ]
+}

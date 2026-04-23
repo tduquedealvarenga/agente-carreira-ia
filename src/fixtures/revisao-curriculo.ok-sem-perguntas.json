@@ -1,0 +1,42 @@
+{
+  "status": "ok",
+  "resumo_geral": "Curriculo com direcao profissional coerente e boa base administrativa, mas ainda com espaco para reforcar impacto e diferenciar melhor as contribuicoes.",
+  "veredito": "Promissor, com ajustes pontuais para Analista Administrativo Junior.",
+  "achados_principais": [
+    {
+      "categoria": "ponto_forte",
+      "titulo": "Direcao profissional consistente",
+      "descricao": "A experiencia apresentada conversa com o objetivo informado."
+    },
+    {
+      "categoria": "ponto_forte",
+      "titulo": "Rotina operacional bem identificada",
+      "descricao": "As atividades mostram familiaridade com controle, organizacao e acompanhamento de processos."
+    },
+    {
+      "categoria": "lacuna_prioritaria",
+      "titulo": "Resultados pouco destacados",
+      "descricao": "O texto ainda enfatiza tarefas mais do que contribuicoes percebidas."
+    }
+  ],
+  "sugestoes_priorizadas": [
+    {
+      "prioridade": 1,
+      "acao": "Reescrever as experiencias mais relevantes com foco em contribuicao pratica e efeito no fluxo administrativo."
+    },
+    {
+      "prioridade": 2,
+      "acao": "Dar mais destaque a controles, relatorios e rotinas que reforcem prontidao para a funcao alvo."
+    },
+    {
+      "prioridade": 3,
+      "acao": "Enxugar descricoes repetitivas para melhorar clareza e leitura."
+    }
+  ],
+  "perguntas_pendentes": [],
+  "proximos_passos": [
+    {
+      "acao": "Revisar primeiro as duas experiencias mais recentes para destacar contribuicoes concretas."
+    }
+  ]
+}
