@@ -1,8 +1,10 @@
 import { useState } from "react";
 
-import { validateReviewInput } from "./review-triage/validate-review-input";
+import {
+  validateReviewInput,
+  type ReviewInputValidationResult,
+} from "./review-triage/validate-review-input";
 import type { ReviewInput } from "./types/review-input";
-import type { ReviewInputValidationResult } from "./review-triage/validate-review-input";
 import { mockCoreClient } from "./core-client/mock-core-client";
 import { ReviewForm } from "./components/ReviewForm";
 import { buildPublicResult, type PublicReviewResult } from "./presentation/build-public-result";
@@ -23,6 +25,7 @@ export default function App() {
       return validation;
     }
 
+    setResult(null);
     setIsLoading(true);
     setRequestError("");
 

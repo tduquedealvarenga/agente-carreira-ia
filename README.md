@@ -1,99 +1,85 @@
 # Agente Carreira IA
 
-Vitrine publica de um agente de IA para revisao de curriculo, melhoria de LinkedIn e mentoria de entrevistas.
+Camada publica do `agente-carreira-ia` para **revisao de curriculo**.
 
-Este repositorio existe para apresentar a ideia, organizar o produto e documentar a evolucao do projeto sem expor prompts proprietarios, dados sensiveis ou logica interna.
+Hoje o repositorio esta em **v1 mock-first local**:
+- coleta a entrada minima;
+- faz triagem publica;
+- chama um mock estatico do core;
+- apresenta o resultado no formato publico da v1.
 
-## Proposta
+## Status Atual
 
-O Agente Carreira IA ajuda profissionais a transformar experiencia, historico e objetivos em materiais de carreira mais claros, estrategicos e convincentes.
+| Item | Estado |
+| --- | --- |
+| escopo | revisao de curriculo |
+| interface | local, tela unica |
+| stack | Vite + React + TypeScript |
+| integracao com core real | ainda nao |
+| fonte de resposta | fixtures JSON canonicos |
 
-O foco inicial e apoiar tres momentos:
+## O Que Ja Existe
 
-- Revisao de curriculo com foco em clareza, impacto e aderencia a vagas.
-- Coach de LinkedIn para posicionamento profissional, headline, sobre e experiencias.
-- Mentoria de entrevistas com simulacao, feedback e treino de respostas.
+- formulario simples para coleta inicial;
+- triagem dos campos obrigatorios;
+- cliente mock trocavel pelo core real depois;
+- apresentacao do resultado estruturado da v1;
+- contrato publico documentado.
 
-## Modulos Do Produto
+## O Que Ainda Nao Existe
 
-### 1. Revisao De Curriculo
+- integracao HTTP com `agente-carreira-ia-core`;
+- autenticacao;
+- upload de arquivo;
+- historico;
+- LinkedIn;
+- entrevista.
 
-Analisa estrutura, narrativa, senioridade, conquistas, palavras-chave e aderencia a vaga.
+## Rodar Localmente
 
-Perguntas que o modulo deve responder:
-
-- O curriculo comunica valor em poucos segundos?
-- As experiencias mostram impacto ou apenas responsabilidades?
-- Existem lacunas de clareza, foco ou posicionamento?
-- O texto conversa com a vaga desejada?
-
-### 2. Coach De LinkedIn
-
-Ajuda a posicionar o perfil para recrutadores, networking e autoridade profissional.
-
-Perguntas que o modulo deve responder:
-
-- A headline diz claramente quem a pessoa e e que valor entrega?
-- O sobre tem narrativa humana e objetiva?
-- As experiencias reforcam a direcao profissional desejada?
-- O perfil facilita contato e descoberta?
-
-### 3. Mentoria De Entrevistas
-
-Simula conversas, ajuda a estruturar respostas e identifica pontos de melhoria.
-
-Perguntas que o modulo deve responder:
-
-- A pessoa consegue explicar sua trajetoria com clareza?
-- As respostas demonstram maturidade, contexto e resultado?
-- Existem riscos de resposta vaga, defensiva ou excessivamente tecnica?
-- O pitch profissional esta memoravel?
-
-## O Que Nao Esta Neste Repositorio
-
-Este repositorio publico nao contem:
-
-- Prompts finais.
-- Rubricas internas detalhadas.
-- Chaves de API.
-- Dados reais de usuarios.
-- Curriculos reais.
-- Logica sensivel de avaliacao.
-
-O nucleo privado do projeto deve ficar em um repositorio separado.
-
-## Estrutura
-
-```text
-agente-carreira-ia/
-├── README.md
-├── docs/
-│   ├── visao-produto.md
-│   ├── privacidade.md
-│   └── roadmap.md
-├── examples/
-│   └── curriculo-anonimo.md
-└── assets/
+```bash
+npm install
+npm run dev
 ```
 
-## Principios
+Depois, abra o endereco mostrado pelo Vite.
 
-- Privacidade antes de performance.
-- Clareza antes de automacao.
-- Feedback acionavel antes de opiniao generica.
-- Linguagem humana antes de jargoes.
-- Transparencia sobre limites da IA.
+## Fluxo Atual
 
-## Roadmap Inicial
+```mermaid
+flowchart TD
+    A["Formulario"] --> B["Triagem publica"]
+    B -->|invalido| C["Erros de campo"]
+    B -->|valido| D["Mock core client"]
+    D --> E["buildPublicResult"]
+    E --> F["ReviewResult"]
+```
 
-- Definir personas principais.
-- Criar exemplos anonimizados.
-- Desenhar o fluxo de revisao de curriculo.
-- Desenhar o fluxo de otimizacao de LinkedIn.
-- Desenhar a experiencia de simulacao de entrevista.
-- Conectar o repositorio publico a uma demo quando houver backend seguro.
+## Documentos Principais
 
-## Status
+| Documento | Papel |
+| --- | --- |
+| `docs/contrato-com-o-core.md` | contrato publico de entrada e saida |
+| `docs/exemplo-de-troca-com-o-core.md` | fixture canonico da v1 |
+| `docs/arquitetura-v1.md` | visao leve da arquitetura local |
+| `docs/fluxo-mock-first.md` | fluxo operacional do prototipo |
 
-Projeto em elaboracao.
+## Estrutura Minima
 
+```text
+src/
+├── App.tsx
+├── components/
+├── core-client/
+├── fixtures/
+├── presentation/
+├── review-triage/
+└── types/
+```
+
+## Limites Do Repositorio Publico
+
+- nao expor prompt privado;
+- nao expor rubrica interna;
+- nao reproduzir logica sensivel do core;
+- nao inferir saida a partir de texto livre quando houver contrato estruturado.

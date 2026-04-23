@@ -60,7 +60,7 @@ export function ReviewForm({ onSubmit }: ReviewFormProps) {
     setFieldErrors(nextErrors);
     setSubmitMessage(
       validation.isValid
-        ? "Entrada minima pronta para seguir na proxima etapa."
+        ? "Entrada valida. O resultado mock aparece abaixo."
         : "Preencha os campos obrigatorios para continuar.",
     );
   }
@@ -208,7 +208,7 @@ export function ReviewForm({ onSubmit }: ReviewFormProps) {
             cursor: "pointer",
           }}
         >
-          Validar entrada
+          Revisar curriculo
         </button>
         <span style={{ color: "#4b5563", fontSize: "14px" }}>
           {submitMessage}
