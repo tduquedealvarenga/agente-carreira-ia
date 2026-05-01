@@ -10,7 +10,7 @@ Descrever a arquitetura minima da v1 local, sem backend real.
 | --- | --- | --- |
 | entrada | coleta os dados minimos | `src/components/ReviewForm.tsx` |
 | triagem | valida se a entrada pode seguir | `src/review-triage/validate-review-input.ts` |
-| cliente do core | abstrai a chamada ao core | `src/core-client/mock-core-client.ts` |
+| cliente do core | define o contrato, a composicao e a implementacao atual | `src/core-client/core-client.ts`, `src/core-client/index.ts`, `src/core-client/mock-core-client.ts` |
 | apresentacao | adapta a saida para a UI | `src/presentation/build-public-result.ts` |
 | tela final | exibe o resultado publico | `src/components/ReviewResult.tsx` |
 | orquestracao | conecta tudo em uma tela | `src/App.tsx` |
@@ -20,7 +20,7 @@ Descrever a arquitetura minima da v1 local, sem backend real.
 ```mermaid
 flowchart LR
     A["ReviewForm"] --> B["validateReviewInput"]
-    B -->|ok| C["mockCoreClient.reviewResume"]
+    B -->|ok| C["coreClient.reviewResume"]
     C --> D["buildPublicResult"]
     D --> E["ReviewResult"]
     B -->|erro| F["mensagens de validacao"]
@@ -38,5 +38,7 @@ flowchart LR
 ## Troca Futura
 
 - manter `mockCoreClient` como ponto de troca;
+- manter `src/core-client/index.ts` como ponto unico de composicao;
+- manter `CoreClient` como contrato estavel da integracao;
 - preservar `ReviewInput` e `ReviewOutput` como contrato;
 - evitar acoplamento da UI ao formato bruto do fixture.

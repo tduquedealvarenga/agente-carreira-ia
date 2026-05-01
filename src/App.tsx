@@ -5,7 +5,7 @@ import {
   type ReviewInputValidationResult,
 } from "./review-triage/validate-review-input";
 import type { ReviewInput } from "./types/review-input";
-import { mockCoreClient } from "./core-client/mock-core-client";
+import { coreClient } from "./core-client";
 import { ReviewForm } from "./components/ReviewForm";
 import { buildPublicResult, type PublicReviewResult } from "./presentation/build-public-result";
 import { ReviewResult } from "./components/ReviewResult";
@@ -29,7 +29,7 @@ export default function App() {
     setIsLoading(true);
     setRequestError("");
 
-    void mockCoreClient
+    void coreClient
       .reviewResume(payload)
       .then((output) => {
         setResult(buildPublicResult(output));
