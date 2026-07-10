@@ -60,7 +60,7 @@ flowchart TD
 | Documento | Papel |
 | --- | --- |
 | `docs/contrato-com-o-core.md` | contrato publico de entrada e saida |
-| `docs/exemplo-de-troca-com-o-core.md` | fixture canonico da v1 |
+| `docs/fixtures/revisao-curriculo-v1.md` | fixture canonico da v1 |
 | `docs/arquitetura-v1.md` | visao leve da arquitetura local |
 | `docs/fluxo-mock-first.md` | fluxo operacional do prototipo |
 

@@ -1,19 +1,21 @@
-# Exemplo De Troca Com O Core
+# Fixture — Revisão de Currículo V1
 
 ## Objetivo
 
-Fixture canonico da v1 para contrato, teste e implementacao do `agente-carreira-ia`.
+Fixture canônico da v1 para contrato, teste e implementação do `agente-carreira-ia`.
 
-## Caso Ficticio
+Este arquivo usa casos fictícios e sanitizados. Ele não deve conter dados reais de usuários.
+
+## Caso fictício 1
 
 | Campo | Valor |
 | --- | --- |
-| perfil | suporte tecnico com contato com planilhas e indicadores |
-| objetivo | Analista de Dados Junior |
-| senioridade | Junior |
-| vaga alvo | nao informada |
+| perfil | suporte técnico com contato com planilhas e indicadores |
+| objetivo | Analista de Dados Júnior |
+| senioridade | Júnior |
+| vaga alvo | não informada |
 
-## Exemplo De Entrada Minima
+## Exemplo de entrada mínima
 
 ```json
 {
@@ -28,7 +30,7 @@ Fixture canonico da v1 para contrato, teste e implementacao do `agente-carreira-
 }
 ```
 
-## Exemplo De Saida Estruturada
+## Exemplo de saída estruturada
 
 ```json
 {
@@ -84,18 +86,16 @@ Fixture canonico da v1 para contrato, teste e implementacao do `agente-carreira-
 }
 ```
 
-## Variacao Curta Sem Perguntas Pendentes
-
-### Caso Ficticio
+## Caso fictício 2 — sem perguntas pendentes
 
 | Campo | Valor |
 | --- | --- |
 | perfil | assistente administrativo com resultados mais claros no texto |
-| objetivo | Analista Administrativo Junior |
-| senioridade | Junior |
-| vaga alvo | nao informada |
+| objetivo | Analista Administrativo Júnior |
+| senioridade | Júnior |
+| vaga alvo | não informada |
 
-### Exemplo De Entrada Minima
+## Exemplo de entrada mínima
 
 ```json
 {
@@ -110,7 +110,7 @@ Fixture canonico da v1 para contrato, teste e implementacao do `agente-carreira-
 }
 ```
 
-### Exemplo De Saida Estruturada
+## Exemplo de saída estruturada
 
 ```json
 {
@@ -157,9 +157,9 @@ Fixture canonico da v1 para contrato, teste e implementacao do `agente-carreira-
 }
 ```
 
-## Notas De Uso
+## Notas de uso
 
-- `perguntas_pendentes` usa o formato final da v1;
-- a variacao curta usa `perguntas_pendentes=[]` como caso normal;
-- `proximos_passos` contem exatamente 1 item;
-- `alertas` foi omitido neste fixture porque e opcional.
+- `perguntas_pendentes=[]` é um caso normal.
+- `proximos_passos` contém exatamente 1 item na v1.
+- `alertas` foi omitido neste fixture porque é opcional.
+- Este arquivo deve acompanhar mudanças em `docs/saida-estruturada-do-core.md`.

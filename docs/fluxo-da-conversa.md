@@ -1,78 +1,74 @@
 # Fluxo Da Conversa
 
-## Visao Curta
+## Objetivo
 
-| Etapa | Papel Da Camada Publica | Chama O Core |
+Descrever o fluxo conversacional da camada pública do `agente-carreira-ia`.
+
+Este arquivo mostra **a ordem das etapas** e **a responsabilidade da camada pública**. As regras detalhadas para decidir entre perguntar, seguir ou interromper ficam em `docs/regras-de-triagem.md`.
+
+## Visão Curta
+
+| Etapa | Papel Da Camada Pública | Chama O Core |
 | --- | --- | --- |
-| 1. abertura | explica o que precisa | nao |
-| 2. coleta | recebe curriculo e contexto | nao |
-| 3. triagem | valida se da para seguir | nao |
-| 4. envio | monta a entrada estruturada | sim |
-| 5. leitura | recebe a saida do core | nao |
-| 6. resposta | apresenta resultado ao usuario | nao |
+| 1. abertura | explica o que a v1 precisa para revisar currículo | não |
+| 2. coleta | recebe currículo e contexto mínimo | não |
+| 3. triagem | valida se a entrada está pronta para o core | não |
+| 4. envio | monta payload estruturado | sim |
+| 5. recebimento | recebe saída estruturada do core | não |
+| 6. apresentação | apresenta resultado ao usuário | não |
 
 ## Passo A Passo
 
 ### 1. Abertura
 
-- informar que a v1 revisa curriculo;
-- pedir curriculo;
+- informar que a v1 revisa currículo;
+- pedir currículo;
 - pedir objetivo profissional;
 - pedir senioridade alvo;
-- pedir contexto opcional: vaga e preferencias.
+- pedir contexto opcional: vaga, restrições ou preferências.
 
 ### 2. Coleta
 
-- receber texto do curriculo ou conteudo extraido;
+- receber texto do currículo ou conteúdo extraído;
 - registrar campos opcionais quando existirem;
-- ignorar dados que nao ajudam na revisao.
+- ignorar dados que não ajudam na revisão;
+- não solicitar dados pessoais sensíveis desnecessários.
 
 ### 3. Triagem
 
-- verificar se o curriculo esta legivel;
+- verificar se a entrada mínima existe;
 - verificar se o pedido cabe no escopo da v1;
-- decidir entre perguntar mais ou seguir.
+- decidir se a conversa deve perguntar mais, seguir para o core ou interromper.
+
+Fonte da verdade desta decisão: `docs/regras-de-triagem.md`.
 
 ### 4. Envio Ao Core
 
-- montar payload estruturado;
-- enviar apenas dados necessarios;
-- nao anexar instrucoes privadas no repositorio publico.
+- montar payload conforme `docs/contrato-com-o-core.md`;
+- enviar apenas dados necessários;
+- não anexar prompts, rubricas ou regras privadas;
+- não antecipar avaliação na camada pública.
 
 ### 5. Recebimento
 
 - receber resposta estruturada do core;
-- verificar status da resposta;
+- verificar `status`;
 - tratar erro ou retorno incompleto sem expor detalhes internos.
 
-### 6. Apresentacao
+Schema esperado: `docs/saida-estruturada-do-core.md`.
 
-- resumir o diagnostico;
-- mostrar prioridades;
-- listar sugestoes acionaveis;
-- indicar proximo passo do usuario.
+### 6. Apresentação
 
-## Quando Perguntar
+- transformar a saída final em resposta clara;
+- preservar o sentido do core;
+- destacar prioridades e próximo passo;
+- não exibir payload técnico ao usuário final.
 
-| Situacao | Acao |
-| --- | --- |
-| sem curriculo | pedir envio |
-| sem objetivo profissional | pedir objetivo |
-| sem senioridade alvo | pedir senioridade |
-| curriculo ilegivel | pedir novo texto ou arquivo |
-| pedido fora do escopo | redirecionar para revisao de curriculo |
-| vaga ou preferencias ausentes | seguir sem bloquear |
-
-## Quando Seguir Sem Perguntar
-
-- curriculo presente e legivel;
-- objetivo presente;
-- senioridade presente;
-- vaga ausente, mas revisao generica ainda faz sentido;
-- usuario pede rapidez e os dados minimos ja existem.
+Regras de apresentação: `docs/apresentacao-do-resultado.md`.
 
 ## Limites Do Fluxo
 
-- nao descrever o passo interno do core;
-- nao transformar triagem em avaliacao;
-- nao apresentar a conversa publica como se fosse a logica de revisao.
+- triagem não é avaliação;
+- o público não executa lógica avaliativa;
+- o público não descreve o passo interno do core;
+- o público não apresenta a conversa como se fosse a metodologia privada.
