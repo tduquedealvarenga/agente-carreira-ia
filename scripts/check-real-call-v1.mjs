@@ -4,6 +4,9 @@ import { createRealCoreClient } from "../src/core-client/real-core-client.ts";
 
 const LOCAL_CORE_CLIENT_MODE_ENV_VAR = "AGENTE_CARREIRA_IA_CORE_CLIENT_MODE";
 const REQUIRED_API_KEY_ENV_VAR = "OPENAI_API_KEY";
+const CLIENT_TIMEOUT_MS = 30000;
+const CLIENT_MAX_RETRIES = 0;
+const MAX_OUTPUT_TOKENS = 900;
 
 const payload = {
   module: "revisao_curriculo_v1",
@@ -56,10 +59,30 @@ function assertRequiredEnv() {
 async function main() {
   assertRequiredEnv();
 
+  let technicalObservation = null;
   const OpenAIClient = await loadOpenAIClientConstructor();
   const client = createRealCoreClient({
     env: process.env,
     OpenAIClient,
+    clientOptions: {
+      timeoutMs: CLIENT_TIMEOUT_MS,
+      maxRetries: CLIENT_MAX_RETRIES,
+    },
+    operationOptions: {
+      maxOutputTokens: MAX_OUTPUT_TOKENS,
+    },
+    onTechnicalObservation: (observation) => {
+      technicalObservation = {
+        requestId: observation.requestId,
+        model: observation.model,
+        statusTecnico: observation.statusTecnico,
+        durationMs: observation.durationMs,
+        responseId: observation.responseId,
+        inputTokens: observation.inputTokens,
+        outputTokens: observation.outputTokens,
+        totalTokens: observation.totalTokens,
+      };
+    },
   });
 
   assert.equal(
@@ -83,20 +106,13 @@ async function main() {
     "perguntas_pendentes invalidas",
   );
   assert.ok(Array.isArray(output.proximos_passos), "proximos_passos invalidos");
-
-  console.log(
-    JSON.stringify(
-      {
-        mode: process.env[LOCAL_CORE_CLIENT_MODE_ENV_VAR],
-        status: output.status,
-        veredito: output.veredito,
-        perguntas_pendentes: output.perguntas_pendentes.length,
-        proximo_passo: output.proximos_passos[0]?.acao ?? null,
-      },
-      null,
-      2,
-    ),
+  assert.notEqual(
+    technicalObservation,
+    null,
+    "observabilidade tecnica ausente na chamada real controlada",
   );
+
+  console.log(JSON.stringify(technicalObservation, null, 2));
 }
 
 await main();
