@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import {
   validateReviewInput,
@@ -14,8 +14,16 @@ export default function App() {
   const [result, setResult] = useState<PublicReviewResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [requestError, setRequestError] = useState("");
+  const isSubmittingRef = useRef(false);
 
   function handleReviewSubmit(payload: ReviewInput): ReviewInputValidationResult {
+    if (isSubmittingRef.current) {
+      return {
+        isValid: true,
+        issues: [],
+      };
+    }
+
     const validation = validateReviewInput(payload);
 
     if (!validation.isValid) {
@@ -26,6 +34,7 @@ export default function App() {
     }
 
     setResult(null);
+    isSubmittingRef.current = true;
     setIsLoading(true);
     setRequestError("");
 
@@ -39,6 +48,7 @@ export default function App() {
         setRequestError("Nao foi possivel carregar o resultado mock nesta etapa.");
       })
       .finally(() => {
+        isSubmittingRef.current = false;
         setIsLoading(false);
       });
 
@@ -100,7 +110,7 @@ export default function App() {
           a tela ja consome o mock canonico e apresenta o resultado no formato
           publico da v1.
         </p>
-        <ReviewForm onSubmit={handleReviewSubmit} />
+        <ReviewForm onSubmit={handleReviewSubmit} isSubmitting={isLoading} />
         {isLoading ? (
           <p style={{ margin: "24px 0 0", color: "#374151" }}>
             Carregando resultado mock...

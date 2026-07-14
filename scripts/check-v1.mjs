@@ -65,6 +65,10 @@ async function runCoreClientSelectionChecks() {
     path.resolve(currentDir, "../src/core-client/index.ts"),
     "utf8",
   );
+  const realCoreClient = await readFile(
+    path.resolve(currentDir, "../src/core-client/real-core-client.ts"),
+    "utf8",
+  );
 
   assert.match(
     coreClientIndex,
@@ -95,6 +99,90 @@ async function runCoreClientSelectionChecks() {
     coreClientIndex,
     /export const coreClient = createConfiguredCoreClient\(\);/,
     "core-client: a app deveria continuar usando a composicao segura por default",
+  );
+  assert.match(
+    realCoreClient,
+    /clientOptions\?: RealCoreClientSdkOptions;/,
+    "real-core-client: deveria reconhecer clientOptions do core local",
+  );
+  assert.match(
+    realCoreClient,
+    /timeoutMs\?: number;/,
+    "real-core-client: deveria reconhecer clientOptions.timeoutMs",
+  );
+  assert.match(
+    realCoreClient,
+    /maxRetries\?: number;/,
+    "real-core-client: deveria reconhecer clientOptions.maxRetries",
+  );
+  assert.match(
+    realCoreClient,
+    /operationOptions\?: RealCoreClientOperationOptions;/,
+    "real-core-client: deveria reconhecer operationOptions do core local",
+  );
+  assert.match(
+    realCoreClient,
+    /maxOutputTokens\?: number;/,
+    "real-core-client: deveria reconhecer operationOptions.maxOutputTokens",
+  );
+}
+
+async function runSubmissionProtectionChecks() {
+  const appSource = await readFile(path.resolve(currentDir, "../src/App.tsx"), "utf8");
+  const reviewFormSource = await readFile(
+    path.resolve(currentDir, "../src/components/ReviewForm.tsx"),
+    "utf8",
+  );
+
+  assert.match(
+    appSource,
+    /const isSubmittingRef = useRef\(false\);/,
+    "submissao: App deveria ter trava imediata contra duplicidade",
+  );
+  assert.match(
+    appSource,
+    /if \(isSubmittingRef\.current\) \{\s+return \{\s+isValid: true,\s+issues: \[\],\s+\};\s+\}/m,
+    "submissao: App deveria ignorar submit duplicado em andamento",
+  );
+  assert.match(
+    appSource,
+    /isSubmittingRef\.current = true;/,
+    "submissao: App deveria marcar processamento antes da chamada ao core client",
+  );
+  assert.match(
+    appSource,
+    /isSubmittingRef\.current = false;/,
+    "submissao: App deveria liberar nova submissao no finally",
+  );
+  assert.match(
+    appSource,
+    /<ReviewForm onSubmit=\{handleReviewSubmit\} isSubmitting=\{isLoading\} \/>/,
+    "submissao: App deveria repassar isLoading ao formulario",
+  );
+  assert.match(
+    reviewFormSource,
+    /isSubmitting: boolean;/,
+    "submissao: ReviewForm deveria receber estado de submissao",
+  );
+  assert.match(
+    reviewFormSource,
+    /if \(isSubmitting\) \{\s+return;\s+\}/m,
+    "submissao: ReviewForm deveria ignorar submit enquanto processa",
+  );
+  assert.match(
+    reviewFormSource,
+    /aria-busy=\{isSubmitting\}/,
+    "submissao: form deveria indicar processamento",
+  );
+  assert.match(
+    reviewFormSource,
+    /disabled=\{isSubmitting\}/,
+    "submissao: botao deveria ficar desabilitado durante processamento",
+  );
+  assert.match(
+    reviewFormSource,
+    /\{isSubmitting \? "Revisando\.\.\." : "Revisar curriculo"\}/,
+    "submissao: botao deveria indicar processamento sem alterar fluxo",
   );
 }
 
@@ -138,6 +226,7 @@ async function runBuilderChecks() {
 async function main() {
   runTriageChecks();
   await runCoreClientSelectionChecks();
+  await runSubmissionProtectionChecks();
   await runBuilderChecks();
   console.log("check:v1 ok");
 }

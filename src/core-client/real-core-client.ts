@@ -9,8 +9,23 @@ export interface RealCoreClientRuntimeEnv {
   [key: string]: string | undefined;
 }
 
+export interface RealCoreClientOpenAIClientOptions {
+  apiKey: string;
+  timeout: number;
+  maxRetries: number;
+}
+
 export interface RealCoreClientOpenAIClient {
-  new (options: { apiKey: string }): unknown;
+  new (options: RealCoreClientOpenAIClientOptions): unknown;
+}
+
+export interface RealCoreClientSdkOptions {
+  timeoutMs?: number;
+  maxRetries?: number;
+}
+
+export interface RealCoreClientOperationOptions {
+  maxOutputTokens?: number;
 }
 
 export interface RealCoreClientOptions {
@@ -19,6 +34,8 @@ export interface RealCoreClientOptions {
   model?: string;
   apiKeyEnvVar?: string;
   OpenAIClient?: RealCoreClientOpenAIClient;
+  clientOptions?: RealCoreClientSdkOptions;
+  operationOptions?: RealCoreClientOperationOptions;
 }
 
 type RunRevisaoCurriculoV1Module = (

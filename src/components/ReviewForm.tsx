@@ -9,6 +9,7 @@ import type {
 
 interface ReviewFormProps {
   onSubmit: (payload: ReviewInput) => ReviewInputValidationResult;
+  isSubmitting: boolean;
 }
 
 interface ReviewFormState {
@@ -35,7 +36,7 @@ function buildIssueMap(issues: ReviewInputIssue[]): Partial<Record<keyof ReviewF
   );
 }
 
-export function ReviewForm({ onSubmit }: ReviewFormProps) {
+export function ReviewForm({ onSubmit, isSubmitting }: ReviewFormProps) {
   const [formState, setFormState] = useState<ReviewFormState>(initialFormState);
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof ReviewFormState, string>>
@@ -44,6 +45,10 @@ export function ReviewForm({ onSubmit }: ReviewFormProps) {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
 
     const payload: ReviewInput = {
       module: "revisao_curriculo_v1",
@@ -68,6 +73,7 @@ export function ReviewForm({ onSubmit }: ReviewFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
+      aria-busy={isSubmitting}
       style={{
         display: "grid",
         gap: "20px",
@@ -197,6 +203,7 @@ export function ReviewForm({ onSubmit }: ReviewFormProps) {
       <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
         <button
           type="submit"
+          disabled={isSubmitting}
           style={{
             border: 0,
             borderRadius: "8px",
@@ -205,10 +212,11 @@ export function ReviewForm({ onSubmit }: ReviewFormProps) {
             fontWeight: 600,
             background: "#111827",
             color: "#ffffff",
-            cursor: "pointer",
+            cursor: isSubmitting ? "not-allowed" : "pointer",
+            opacity: isSubmitting ? 0.72 : 1,
           }}
         >
-          Revisar curriculo
+          {isSubmitting ? "Revisando..." : "Revisar curriculo"}
         </button>
         <span style={{ color: "#4b5563", fontSize: "14px" }}>
           {submitMessage}
